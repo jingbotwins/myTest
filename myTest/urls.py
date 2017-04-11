@@ -15,23 +15,33 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from rest_framework import routers,serializers,viewsets
 
 #Serializer define the API representation
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = User
-		fields = ('url','username','email','is_staff')
+		fields = ('url','username','email','is_staff','groups')
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Group
+		fields = ('url','name')
 
 #ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
-	queryset = User.objects.all()
+	queryset = User.objects.all().order_by('-date_joined')
 	serializer_class = UserSerializer
+
+class GroupViewSet(viewsets.ModelViewSet):
+	queryset = Group.objects.all()
+	serializer_class = GroupSerializer
 	
 #Routers provide an easy way of automatically determining the URL conf
 router = routers.DefaultRouter()
 router.register(r'users',UserViewSet)
+router.register(r'groups',GroupViewSet)
 
 #Wire up our API using automatic URL routing
 #Additionally, we include login URLs for the browsable API
