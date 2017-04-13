@@ -1,6 +1,6 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import api_view
+from rest_framework import Response
 #from django.shortcuts import render
 #from django.views.decorators.csrf import csrf_exempt
 #from django.http import HttpResponse,JsonResponse
@@ -12,7 +12,7 @@ from myLesson.serializers import MyLessonSerializer
 # Create your views here.
 
 @api_view(['GET','POST'])
-def MyLesson_list(request,format=None):
+def MyLesson_list(request):
     """
     List all MyLesson,or create a new MyLesson    
     """
@@ -29,7 +29,7 @@ def MyLesson_list(request,format=None):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','PUT','DELETE'])
-def MyLesson_detail(request,pk,format=None):
+def MyLesson_detail(request,pk):
     """
     Retrieve,update or delete a myLesson instance
     """
@@ -38,11 +38,11 @@ def MyLesson_detail(request,pk,format=None):
     except MyLesson.DoesNotExit:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
+    if request.method == 'GET'
         serializer = MyLessonSerializer(myLesson)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    elif request.method == 'PUT'
         serializer = MyLessonSerializer(myLesson,data=request.data)
         if serializer.is_valid():
             serializer.save()
