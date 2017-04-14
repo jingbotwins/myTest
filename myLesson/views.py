@@ -5,13 +5,16 @@
 #from rest_framework.renderers import JSONRenderer
 #from rest_framework.parsers import JSONParser
 from myLesson.models import MyLesson
-from myLesson.serializers import MyLessonSerializer
+from myLesson.serializers import MyLessonSerializer,UserSerializer
+from rest_framework import generics
+from rest_framework import permissions
+from django.contrib.auth.models import User
+from myLesson.permissions import IsOwnerOrReadOnly
 #from django.http import Http404
 #from rest_framework.views import APIView
 #from rest_framework.response import Response
 #from rest_framework import status
 #from rest_framework import mixins
-from rest_framework import generics
 # Create your views here.
 
 
@@ -19,10 +22,24 @@ from rest_framework import generics
 class MyLessonList(generics.ListCreateAPIView):
     queryset = MyLesson.objects.all()
     serializer_class = MyLessonSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def perform_create(self,serializer):
+        serializer.save(owner=self.request.user)
 
 class MyLessonDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = MyLesson.objects.all()
     serializer_class = MyLessonSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 
