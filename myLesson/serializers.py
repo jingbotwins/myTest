@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from myLesson.models import MyLesson,LANGUAGE_CHOICES,STYLE_CHOICES
+from myLesson.models import MyLesson
 from django.contrib.auth.models import User
 
 class MyLessonSerializer(serializers.HyperlinkedModelSerializer):

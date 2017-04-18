@@ -12,3 +12,5 @@ First Django rest framework project
 cb110b3ab6e40c5791da2d0b66df04b278cce4a9 Class-based Views
 ## [Authentication & Permissions](http://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/)
 fec2eec030bf070cbeb0e61f5a243bc80b17472 Authentication & Permissions
+## [Relationships & Hyperlinked APIs](http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/)
+367ad43fdcf1f50387a4450277616590a1ac2368 Relationships & Hyperlinked APIs

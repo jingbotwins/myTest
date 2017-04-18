@@ -20,6 +20,8 @@ class MyLesson(models.Model):
     owner = models.ForeignKey('auth.User',related_name='myLesson',on_delete=models.CASCADE)
     highlighted = models.TextField()
 
+    class Meta:
+        ordering = ('created',)
 
     def save(self,*args,**kwargs):
         """
@@ -28,14 +30,14 @@ class MyLesson(models.Model):
         """
         lexer = get_lexer_by_name(self.language)
         linenos = self.linenos and 'table' or False
-        options = self.title and {'title':self.title} or {}
-        formatter = HtmlFormatter(style=self.style,linenos=linenos,
-                                  full=True,**kwargs)
-        self.highlighted = highlight(self.code,lexer,fomatter)
-        super(MyLesson,self).save(*args,**kwargs)
-
-    class Meta:
-        ordering = ('created',)
-
+        options = self.title and {'title': self.title} or {}
+        formatter = HtmlFormatter(style=self.style, linenos=linenos,
+                                  full=True, **options)
+        self.highlighted = highlight(self.code, lexer, formatter)
+        super(MyLesson, self).save(*args,**kwargs)
+        
+        myLesson = MyLesson.objects.all()
+        if len(myLesson) > 100:
+            myLesson[0].delete()
 
 # Create your models here.

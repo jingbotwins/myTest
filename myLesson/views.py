@@ -4,6 +4,11 @@
 #from django.http import HttpResponse,JsonResponse
 #from rest_framework.renderers import JSONRenderer
 #from rest_framework.parsers import JSONParser
+#from django.http import Http404
+#from rest_framework.views import APIView
+#from rest_framework import status
+#from rest_framework import mixins
+# Create your views here.
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.decorators import api_view
@@ -14,11 +19,6 @@ from django.contrib.auth.models import User
 from myLesson.models import MyLesson
 from myLesson.serializers import MyLessonSerializer,UserSerializer
 from myLesson.permissions import IsOwnerOrReadOnly
-#from django.http import Http404
-#from rest_framework.views import APIView
-#from rest_framework import status
-#from rest_framework import mixins
-# Create your views here.
 
 @api_view(['GET'])
 def api_root(request,format=None):
