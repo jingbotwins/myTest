@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'rest_framework',
-	'myLesson.apps.MylessonConfig',
+    'myLesson.apps.MylessonConfig'
 ]
 
 REST_FRAMEWORK = {

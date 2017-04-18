@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url,include
-from django.contrib import admin
-from django.contrib.auth.models import User,Group
-from rest_framework import routers,serializers,viewsets
-
+#from django.contrib import admin
+#from django.contrib.auth.models import User,Group
+#from rest_framework import routers,serializers,viewsets
+'''
 #Serializer define the API representation
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -42,7 +42,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users',UserViewSet)
 router.register(r'groups',GroupViewSet)
-
+'''
 #Wire up our API using automatic URL routing
 #Additionally, we include login URLs for the browsable API
 urlpatterns = [
@@ -53,4 +53,4 @@ urlpatterns = [
 
 #urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
-#]
+

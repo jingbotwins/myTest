@@ -4,20 +4,36 @@
 #from django.http import HttpResponse,JsonResponse
 #from rest_framework.renderers import JSONRenderer
 #from rest_framework.parsers import JSONParser
-from myLesson.models import MyLesson
-from myLesson.serializers import MyLessonSerializer,UserSerializer
 from rest_framework import generics
 from rest_framework import permissions
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework import renderers
 from django.contrib.auth.models import User
+from myLesson.models import MyLesson
+from myLesson.serializers import MyLessonSerializer,UserSerializer
 from myLesson.permissions import IsOwnerOrReadOnly
 #from django.http import Http404
 #from rest_framework.views import APIView
-#from rest_framework.response import Response
 #from rest_framework import status
 #from rest_framework import mixins
 # Create your views here.
 
+@api_view(['GET'])
+def api_root(request,format=None):
+    return Response({
+        'users':reverse('user-list',request=request,format=format),
+        'myLesson':reverse('myLesson-list',request=request,format=format)
+    })
 
+class MyLessonHighlight(generics.GenericAPIView):
+    queryset = MyLesson.objects.all()
+    serializer_class = MyLessonSerializer
+    renderer_classes = (renderers.StaticHTMLRenderer,)
+    def get(self,request,*args,**kwargs):
+        myLesson = self.get_object()
+        return Response(myLesson.highlighted)
 
 class MyLessonList(generics.ListCreateAPIView):
     queryset = MyLesson.objects.all()
@@ -29,7 +45,6 @@ class MyLessonList(generics.ListCreateAPIView):
 class MyLessonDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = MyLesson.objects.all()
     serializer_class = MyLessonSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
 

@@ -2,18 +2,21 @@ from rest_framework import serializers
 from myLesson.models import MyLesson,LANGUAGE_CHOICES,STYLE_CHOICES
 from django.contrib.auth.models import User
 
-class MyLessonSerializer(serializers.ModelSerializer):
+class MyLessonSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    url = serializers.HyperlinkedIdentityField(view_name="myLesson-detail")
+    highlight = serializers.HyperlinkedIdentityField(view_name='myLesson-highlight',format='html')
     class Meta:
-		model = MyLesson
-		fields = ('id','title','code','linenos','language','style','owner')
+        model = MyLesson
+        fields = ('url','id','highlight','owner','title','code','linenos','language','style')
 
 
-class UserSerializer(serializers.ModelSerializer):
-    myLesson = serializers.PrimaryKeyRelatedField(many=True,queryset=MyLesson.objects.all())
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+#    myLesson = serializers.PrimaryKeyRelatedField(many=True,queryset=MyLesson.objects.all())
+    myLesson = serializers.HyperlinkedRelatedField(many=True,view_name='myLesson-detail',read_only=True)
     class Meta:
         model = User
-        fields = ('id','username','myLesson')
+        fields = ('url','id','username','myLesson')
 
 
 '''

@@ -10,4 +10,5 @@ First Django rest framework project
 63096de422c8748dca012a872ccd7d86b6361ab5 Requests and Responses
 ## [Class-based Views](http://www.django-rest-framework.org/tutorial/3-class-based-views/)
 cb110b3ab6e40c5791da2d0b66df04b278cce4a9 Class-based Views
-
+## [Authentication & Permissions](http://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/)
+fec2eec030bf070cbeb0e61f5a243bc80b17472 Authentication & Permissions
