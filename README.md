@@ -14,3 +14,5 @@ cb110b3ab6e40c5791da2d0b66df04b278cce4a9 Class-based Views
 fec2eec030bf070cbeb0e61f5a243bc80b17472 Authentication & Permissions
 ## [Relationships & Hyperlinked APIs](http://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/)
 367ad43fdcf1f50387a4450277616590a1ac2368 Relationships & Hyperlinked APIs
+## fix bug
+ea4a1bf3211f7c4dd4b386ba53d9362eef878479 fix bug:highlight code can not show

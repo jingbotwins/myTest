@@ -9,9 +9,9 @@
 #from rest_framework import status
 #from rest_framework import mixins
 # Create your views here.
-from rest_framework import generics
-from rest_framework import permissions
-from rest_framework.decorators import api_view
+from rest_framework import generics,viewsets
+from rest_framework import permissions,request
+from rest_framework.decorators import api_view,detail_route
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
@@ -19,14 +19,44 @@ from django.contrib.auth.models import User
 from myLesson.models import MyLesson
 from myLesson.serializers import MyLessonSerializer,UserSerializer
 from myLesson.permissions import IsOwnerOrReadOnly
-
+'''
 @api_view(['GET'])
 def api_root(request,format=None):
     return Response({
         'users':reverse('user-list',request=request,format=format),
         'myLesson':reverse('myLesson-list',request=request,format=format)
     })
+'''
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset automatically provides 'list' and 'detail' actions.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+class MyLessonViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides 'list', 'create', 'retrieve',
+    'update' and 'destroy' actions.
+
+    Additionally we also provide and extra 'highlight' action.
+    """
+    queryset = MyLesson.objects.all()
+    serializer_class = MyLessonSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self,request,*args,**kwargs):
+        myLesson = self.get_object()
+        return Response(myLesson.highlighted)
+
+    def perform_create(self,serializer):
+        serializer.save(owner=self.request.user)
+
+
+
+'''
 class MyLessonHighlight(generics.GenericAPIView):
     queryset = MyLesson.objects.all()
     serializer_class = MyLessonSerializer
@@ -48,6 +78,7 @@ class MyLessonDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
 
+
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -56,11 +87,6 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
-
-
-
-'''
 class MyLessonList(mixins.ListModelMixin,
                    mixins.CreateModelMixin,
                    generics.GenericAPIView):

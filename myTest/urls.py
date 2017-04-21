@@ -13,11 +13,45 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
+from django.conf.urls import url,include,patterns
+from myLesson import views
+from rest_framework.routers import DefaultRouter
+
+
+#creatw a router and register our viewsets with it
+router = DefaultRouter()
+router.register(r'myLesson',views.MyLessonViewSet)
+router.register(r'users',views.UserViewSet)
+
+#The API URLs are now determined automatically by the router.
+#Additionly, we include the login URLs for browsable API
+urlpatterns = patterns('',
+    url(r'^',include(router.urls)),
+    url(r'^api_auth/',include('rest_framework.urls',namespace='rest_framework'))
+)
+'''
 from django.conf.urls import url,include
+from myLesson import views
+from rest_framework.routers import DefaultRouter
 #from django.contrib import admin
 #from django.contrib.auth.models import User,Group
-#from rest_framework import routers,serializers,viewsets
-'''
+#fprom rest_framework import routers,serializers,viewsets
+
+#Create a router and register our viewsets with it.
+#router = DefaultRouter()
+#router.register(r'myLesson',views.MyLessonViewSet)
+#router.register(r'users',views.UserViewSet)
+
+#The API URLs are now determined automatically by the router.
+#Additionally, we include login URLs for the browsable API
+urlpatterns = [
+    #url(r'^',include(router.urls)),
+	url(r'^api-auth/',include('rest_framework.urls',namespace='rest_framework')),
+	url(r'^',include('myLesson.urls')),
+]
+
+
 #Serializer define the API representation
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -43,14 +77,7 @@ router = routers.DefaultRouter()
 router.register(r'users',UserViewSet)
 router.register(r'groups',GroupViewSet)
 '''
-#Wire up our API using automatic URL routing
-#Additionally, we include login URLs for the browsable API
-urlpatterns = [
-    #url(r'^',include(router.urls)),
-	url(r'^api-auth/',include('rest_framework.urls',namespace='rest_framework')),
-	url(r'^',include('myLesson.urls')),
-]
 
 #urlpatterns = [
 #    url(r'^admin/', admin.site.urls),
-
+#}

@@ -4,16 +4,18 @@ from django.contrib.auth.models import User
 
 class MyLessonSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    url = serializers.HyperlinkedIdentityField(view_name="myLesson-detail")
-    highlight = serializers.HyperlinkedIdentityField(view_name='myLesson-highlight',format='html')
+ #   url = serializers.HyperlinkedIdentityField(view_name="MyLesson-detail")
+#    highlight = serializers.HyperlinkedIdentityField(view_name='myLesson_highlight',format='html')
     class Meta:
         model = MyLesson
-        fields = ('url','id','highlight','owner','title','code','linenos','language','style')
+        #fields = ('url','id','owner','highlight','title','code','linenos','language','style')
+        fields = ('url','id','owner','title','code','linenos','language','style')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 #    myLesson = serializers.PrimaryKeyRelatedField(many=True,queryset=MyLesson.objects.all())
-    myLesson = serializers.HyperlinkedRelatedField(many=True,view_name='myLesson-detail',read_only=True)
+#    url = serializers.HyperlinkedIdentityField(view_name="user-detail")
+#    myLesson = serializers.HyperlinkedRelatedField(many=True,view_name='MyLesson-detail',read_only=True)
     class Meta:
         model = User
         fields = ('url','id','username','myLesson')
